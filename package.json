@@ -1,0 +1,40 @@
+{
+  "name": "kevs-slack-bot",
+  "version": "1.0.0",
+  "description": "Slack bot with Stripe webhook integration",
+  "main": "src/app.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinl19/kevs-slack-bot.git"
+  },
+  "author": "Kevin Liu <kevinliu1996@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevinl19/kevs-slack-bot/issues"
+  },
+  "scripts": {
+    "start": "yarn run dev",
+    "dev": "ts-node-dev --respawn --transpile-only .",
+    "debug": "ts-node-dev --inspect --respawn --transpile-only .",
+    "clean": "rimraf lib/*",
+    "build": "npm-run-all clean tsc",
+    "tsc": "tsc",
+    "lint": "eslint --ext .js,.ts 'src/'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "homepage": "https://github.com/kevinl19/kevs-slack-bot#readme",
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.2",
+    "@types/express": "^4.17.13",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "7.14.0",
+    "eslint-config-airbnb": "^19.0.0",
+    "eslint-config-airbnb-typescript": "^16.0.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
