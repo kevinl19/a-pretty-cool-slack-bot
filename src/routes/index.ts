@@ -17,8 +17,8 @@ const StripeErrorTypes = [
   'invalid_grant',
 ];
 
-const isStripeError = (object: any): object is Stripe.StripeError =>
-  !!object.type && StripeErrorTypes.includes(object.type);
+const isStripeError = (object: Stripe.StripeError | Stripe.Event):
+  object is Stripe.StripeError => !!object.type && StripeErrorTypes.includes(object.type);
 
 const handleStripeEvent = ({ stripeService }: HandleStripeEventParams) => [
   async (req: ModifiedRequest, res: Response) => {
@@ -34,7 +34,8 @@ const handleStripeEvent = ({ stripeService }: HandleStripeEventParams) => [
 
     const response = await stripeService.verify(payload, signature);
     if (!response || isStripeError(response)) {
-      res.status(400).send(`Error verifying webhook: ${response}`);
+      const error = response.message ? `: ${response.message}` : '';
+      res.status(400).send(`Error verifying webhook${error}`);
       return;
     }
 
@@ -43,8 +44,7 @@ const handleStripeEvent = ({ stripeService }: HandleStripeEventParams) => [
       // Do something
     }
 
-    // Return a 200 res to acknowledge receipt of the event
-    res.send();
+    res.send(); // Return a 200 res to acknowledge receipt of the event
   },
 ];
 

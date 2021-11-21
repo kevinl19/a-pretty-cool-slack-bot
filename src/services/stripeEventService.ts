@@ -39,7 +39,7 @@ class StripeEventService {
 
   async verify(payload: string, signature: string[] | string): Promise<Stripe.Event | Stripe.StripeError> {
     try {
-      return this.stripe.webhooks.constructEvent(
+      return await this.stripe.webhooks.constructEvent(
         payload, signature, this.secret,
       );
     } catch (error) {
