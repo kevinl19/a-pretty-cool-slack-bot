@@ -1,4 +1,4 @@
-## Kevin's Sweet Slack Bot
+## A Pretty Buggy Slack Bot
 
 Integrates **Slack** 
 with **Stripe** 
