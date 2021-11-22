@@ -13,12 +13,11 @@
     "url": "https://github.com/kevinl19/expressful-striped-slacker-bot/issues"
   },
   "scripts": {
-    "start": "yarn run dev",
     "dev": "ts-node-dev --respawn --transpile-only .",
     "debug": "ts-node-dev --inspect --respawn --transpile-only .",
+    "tsc": "tsc",
     "clean": "rimraf lib/*",
     "build": "npm-run-all clean tsc",
-    "tsc": "tsc",
     "lint": "eslint --ext .js,.ts 'src/'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
