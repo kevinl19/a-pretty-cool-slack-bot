@@ -1,4 +1,4 @@
-## Kev's Sweet Slack Bot
+## Kevin's Sweet Slack Bot
 
 Integrates **Slack** ([Bolt](https://slack.dev/bolt-js/tutorial/getting-started))
 with **Stripe** ([Node.js](https://github.com/stripe/stripe-node))
