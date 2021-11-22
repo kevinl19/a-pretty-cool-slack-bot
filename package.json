@@ -1,16 +1,16 @@
 {
-  "name": "expressfully-striped-slacker-bot",
+  "name": "pretty-good-slack-bot",
   "version": "1.0.0",
   "description": "Slack bot with Stripe webhook integration",
   "main": "src/app.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kevinl19/expressfully-striped-slacker-bot.git"
+    "url": "git+https://github.com/kevinl19/pretty-good-slack-bot.git"
   },
   "author": "Kevin Liu <kevinliu1996@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kevinl19/expressfully-striped-slacker-bot/issues"
+    "url": "https://github.com/kevinl19/pretty-good-slack-bot/issues"
   },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only .",
@@ -21,7 +21,7 @@
     "lint": "eslint --ext .js,.ts 'src/'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/kevinl19/expressfully-striped-slacker-bot#readme",
+  "homepage": "https://github.com/kevinl19/pretty-good-slack-bot#readme",
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
     "eslint": "7.14.0",
