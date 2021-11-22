@@ -18,4 +18,4 @@ with **Stripe**
 1. Setup .env from .env.sample
 2. `yarn` to install packages 
 3. `yarn dev` or `yarn debug` for development
-4. `yarn run` for production
+4. `yarn build` for production
