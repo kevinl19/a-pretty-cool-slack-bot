@@ -1,7 +1,7 @@
 ## Kev's Sweet Slack Bot
 
 Integrates **Slack** ([Bolt](https://slack.dev/bolt-js/tutorial/getting-started))
-with **Stripe** ([for Node.js](https://github.com/stripe/stripe-node))
+with **Stripe** ([Node.js](https://github.com/stripe/stripe-node))
 
 Notifies a Slack channel when on Stripe:
   1. A customer is created
