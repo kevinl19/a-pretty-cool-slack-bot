@@ -1,19 +1,19 @@
 import { Request } from 'express';
 import { Stripe } from 'stripe';
-import { StripeEventType } from './enum';
 import StripeValidator from './classes/stripeValidator';
 import EventNotifier from './classes/eventNotifier';
+import { StripeEventType } from './enum';
 
-export interface RouteDependencies {
+interface RouteDependencies {
   stripeEventService: StripeValidator,
   eventNotifier: EventNotifier
 }
 
-export interface ModifiedRequest extends Request {
+interface ModifiedRequest extends Request {
   rawBody?: string,
 }
 
-export type StripeObject =
+type StripeObject =
   Stripe.Event
   | Stripe.SubscriptionItem
   | Stripe.BalanceTransaction
@@ -23,7 +23,7 @@ export type StripeObject =
   | Stripe.PaymentIntent
   | Stripe.Account
 
-export interface StripeEvent extends Stripe.Event {
+interface StripeEvent extends Stripe.Event {
   type: StripeEventType,
   data: {
     object: StripeObject,
@@ -31,9 +31,9 @@ export interface StripeEvent extends Stripe.Event {
   },
 }
 
-export type SupportedEvents = (
-  StripeEventType.InvoicePaymentSucceeded
-  | StripeEventType.CustomerSubscriptionUpdated
-  | StripeEventType.CustomerCreated
-  );
-
+export {
+  RouteDependencies,
+  ModifiedRequest,
+  StripeEvent,
+  StripeObject,
+};

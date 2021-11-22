@@ -1,5 +1,5 @@
 /* These are all the possible webhook events from Stripe */
-export enum StripeEventType {
+enum StripeEventType {
   AccountUpdated = 'account.updated',
   AccountApplicationAuthorized = 'account.application.authorized',
   AccountApplicationDeauthorized = 'account.application.deauthorized',
@@ -159,3 +159,26 @@ export enum StripeEventType {
   TransferReversed = 'transfer.reversed',
   TransferUpdated = 'transfer.updated',
 }
+
+enum StripeError {
+  CardError = 'card_error',
+  InvalidRequestError = 'invalid_request_error',
+  ApiError = 'api_error',
+  IdempotencyError = 'idempotency_error',
+  RateLimitError = 'rate_limit_error',
+  AuthenticationError = 'authentication_error',
+  InvalidGrant = 'invalid_grant',
+}
+
+enum SupportedEventTypes {
+  PaymentSucceeded = StripeEventType.InvoicePaymentSucceeded,
+  SubscriptionUpdated = StripeEventType.CustomerSubscriptionUpdated,
+  CustomerCreated = StripeEventType.CustomerCreated,
+}
+
+export {
+  StripeEventType,
+  StripeError,
+  SupportedEventTypes,
+};
+
