@@ -158,9 +158,3 @@ export enum StripeEventType {
   TransferReversed = 'transfer.reversed',
   TransferUpdated = 'transfer.updated',
 }
-
-export type SupportedEvents = (
-  StripeEventType.InvoicePaymentSucceeded
-  | StripeEventType.CustomerSubscriptionUpdated
-  | StripeEventType.CustomerCreated
-  );

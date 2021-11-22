@@ -1,5 +1,5 @@
 import http from 'http';
-import { ModifiedRequest } from '../type';
+import { ModifiedRequest } from './type';
 
 const rawBodySaver = (req: http.IncomingMessage, res: http.OutgoingMessage, buf: Buffer, encoding: string): void => {
   if (buf && buf.length) {
@@ -9,4 +9,4 @@ const rawBodySaver = (req: http.IncomingMessage, res: http.OutgoingMessage, buf:
   }
 };
 
-export default rawBodySaver;
+export { rawBodySaver };
