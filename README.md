@@ -1,4 +1,4 @@
-## A Pretty Buggy Slack Bot
+## Pretty Buggy Slack Bot
 
 Integrates **Slack** 
 with **Stripe** 
