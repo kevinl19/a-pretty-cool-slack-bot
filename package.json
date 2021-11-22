@@ -1,7 +1,7 @@
 {
   "name": "pretty-good-slack-bot",
   "version": "1.0.0",
-  "description": "Slack bot with Stripe webhook integration",
+  "description": "A pretty cool Slack bot",
   "main": "src/app.ts",
   "repository": {
     "type": "git",
