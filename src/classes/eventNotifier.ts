@@ -1,4 +1,4 @@
-import SlackWebApi from './slackWebApi';
+import SlackAPI from './slackAPI';
 import { StripeEventType } from '../enum';
 import { getRandomEmojis } from '../util';
 import { Stripe } from 'stripe';
@@ -10,20 +10,20 @@ interface NewSubscriptionParams {
 }
 
 interface EventNotifierParams {
-  slackWebService: SlackWebApi;
-  channel: string;
+  slack: SlackAPI;
+  channelId: string;
 }
 
 class EventNotifier {
-  slackService: SlackWebApi;
-  channel: string;
+  slack: SlackAPI;
+  channelId: string;
 
-  constructor({ slackWebService, channel }: EventNotifierParams) {
-    this.slackService = slackWebService;
-    this.channel = channel;
+  constructor({ slack, channelId }: EventNotifierParams) {
+    this.slack = slack;
+    this.channelId = channelId;
   }
 
-  async handleEvent(event: StripeEvent) {
+  async handle(event: StripeEvent) {
     try {
       return await this.sendMessageIfValid(event);
     } catch (e) {
@@ -42,9 +42,9 @@ class EventNotifier {
   }
 
   async handleCustomerCreated(customer: Stripe.Customer) {
-    return this.slackService.sendMessage({
+    return this.slack.sendMessage({
       text: `A new user has just registered! ${getRandomEmojis(1)}`,
-      channel: this.channel,
+      channel: this.channelId,
     });
   }
 
@@ -62,9 +62,9 @@ class EventNotifier {
       return undefined;
     }
 
-    return await this.slackService.sendMessage({
+    return await this.slack.sendMessage({
       text: `A user has just subscribed to ${validItem.plan.nickname}! ${getRandomEmojis(5)}`,
-      channel: this.channel,
+      channel: this.channelId,
     });
 
   }
@@ -74,9 +74,9 @@ class EventNotifier {
       return undefined;
     }
 
-    return await this.slackService.sendMessage({
+    return await this.slack.sendMessage({
       text: `We securing the bag and getting that 🍞. 🤑🤑🤑\nPayment for $${(payment.amount / 100).toFixed(2)} received ${getRandomEmojis(3)}`,
-      channel: this.channel,
+      channel: this.channelId,
     });
   }
 

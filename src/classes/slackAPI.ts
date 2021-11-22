@@ -1,6 +1,6 @@
 import { ChatPostMessageArguments, WebClient } from '@slack/web-api';
 
-class SlackWebApi {
+class SlackAPI {
   client: WebClient;
 
   constructor({ client }: { client: WebClient }) {
@@ -12,4 +12,4 @@ class SlackWebApi {
   }
 }
 
-export default SlackWebApi;
+export default SlackAPI;

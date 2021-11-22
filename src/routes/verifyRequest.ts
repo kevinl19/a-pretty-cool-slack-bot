@@ -1,9 +1,9 @@
 import { NextFunction, Response } from 'express';
-import { StripeValidator } from '../classes';
+import { EventValidator } from '../classes';
 import { ModifiedRequest } from '../type';
 import { StripeError } from '../enum';
 
-const verifyRequest = ({ stripeValidator }: { stripeValidator: StripeValidator }) => [
+const verifyRequest = ({ eventValidator }: { eventValidator: EventValidator }) => [
   async ({
     rawBody: payload,
     headers: { 'stripe-signature': signature },
@@ -11,7 +11,7 @@ const verifyRequest = ({ stripeValidator }: { stripeValidator: StripeValidator }
     if (!signature || !payload) {
       res.status(!payload ? 400 : 401).send(!payload ? 'No payload' : 'No signature');
     }
-    const response = stripeValidator.verifyWebhook(payload!, signature!);
+    const response = eventValidator.validate(payload!, signature!);
     if (response && Object.values(StripeError).includes(response.type)) {
       res.status(400).send(response.message);
       return;

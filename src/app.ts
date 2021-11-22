@@ -6,15 +6,15 @@ import { Stripe } from 'stripe';
 import express from 'express';
 import { rawBodySaver } from './middleware';
 import { WebClient } from '@slack/web-api';
-import StripeValidator from './classes/stripeValidator';
+import EventValidator from './classes/eventValidator';
 import { handleEvent, verifyRequest } from './routes';
-import { SlackWebApi } from './classes';
+import { SlackAPI } from './classes';
 import { RouteDependencies } from './type';
 import { CREDENTIALS, PORT } from './constant';
 
 dotenv.config();
 
-const initReceiverAndApp = async () => {
+const initializeApplication = async () => {
   // Normal routing via Express
   const receiver = new ExpressReceiver({ signingSecret: CREDENTIALS.slack.signingSecret });
 
@@ -29,20 +29,20 @@ const initReceiverAndApp = async () => {
 
 const setupDependencies = async (client: WebClient) => {
   const stripe = new Stripe(CREDENTIALS.stripe.secretKey, { apiVersion: CREDENTIALS.stripe.apiVersion });
-  const slackWebService = new SlackWebApi({ client });
-  const stripeEventService = new StripeValidator({ stripe: stripe, signingSecret: CREDENTIALS.stripe.signingSecret });
-  const eventNotifier = new EventNotifier({ slackWebService, channel: CREDENTIALS.slack.channel });
+  const slack = new SlackAPI({ client });
+  const eventValidator = new EventValidator({ stripe, signingSecret: CREDENTIALS.stripe.signingSecret });
+  const eventNotifier = new EventNotifier({ slack, channelId: CREDENTIALS.slack.channel });
 
-  return { stripeEventService, eventNotifier };
+  return { eventValidator, eventNotifier };
 };
 
 const addRoutes = async (receiver: ExpressReceiver, dependencies: RouteDependencies) => {
-  const { stripeEventService, eventNotifier } = dependencies;
-  receiver.app.post('/webhook', verifyRequest({ stripeValidator: stripeEventService }), handleEvent({ eventNotifier }));
+  const { eventValidator, eventNotifier } = dependencies;
+  receiver.app.post('/webhook', verifyRequest({ eventValidator }), handleEvent({ eventNotifier }));
 };
 
 const start = () => async () => {
-  const { receiver, app } = await initReceiverAndApp();
+  const { receiver, app } = await initializeApplication();
   const dependencies = await setupDependencies(app.client);
   await addRoutes(receiver, dependencies);
 

@@ -1,6 +1,6 @@
 import { Stripe } from 'stripe';
 
-class StripeValidator {
+class EventValidator {
   stripe: Stripe;
   signingSecret: string;
 
@@ -9,7 +9,7 @@ class StripeValidator {
     this.signingSecret = signingSecret;
   }
 
-  verifyWebhook(payload: string, signature: string | string[]) {
+  validate(payload: string, signature: string | string[]) {
     try {
       return this.stripe.webhooks.constructEvent(payload, signature, this.signingSecret);
     } catch (e: any) {
@@ -18,4 +18,4 @@ class StripeValidator {
   }
 }
 
-export default StripeValidator;
+export default EventValidator;

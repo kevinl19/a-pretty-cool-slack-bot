@@ -1,11 +1,11 @@
 import { Request } from 'express';
 import { Stripe } from 'stripe';
-import StripeValidator from './classes/stripeValidator';
+import EventValidator from './classes/eventValidator';
 import EventNotifier from './classes/eventNotifier';
 import { StripeEventType } from './enum';
 
 interface RouteDependencies {
-  stripeEventService: StripeValidator,
+  eventValidator: EventValidator,
   eventNotifier: EventNotifier
 }
 
@@ -27,7 +27,9 @@ interface StripeEvent extends Stripe.Event {
   type: StripeEventType,
   data: {
     object: StripeObject,
-    previous_attributes?: { status?: Stripe.Subscription.Status };
+    previous_attributes?: {
+      status?: Stripe.Subscription.Status
+    };
   },
 }
 

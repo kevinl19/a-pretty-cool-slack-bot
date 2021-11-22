@@ -1,9 +1,9 @@
+import SlackAPI from './slackAPI';
 import EventNotifier from './eventNotifier';
-import SlackWebApi from './slackWebApi';
-import StripeValidator from './stripeValidator';
+import EventValidator from './eventValidator';
 
 export {
+  SlackAPI,
   EventNotifier,
-  SlackWebApi,
-  StripeValidator,
+  EventValidator,
 };
