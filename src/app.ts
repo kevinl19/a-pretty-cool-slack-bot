@@ -28,19 +28,14 @@ const credentials = {
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 const initReceiverAndApp = async () => {
-  // Listener for normal routes using Express
-  const receiver = new ExpressReceiver(
-    {
-      signingSecret: credentials.slack.signingSecret,
-    });
-  // Listener for Slack events
-  const app = new App({
-    receiver, token: credentials.slack.token,
-  });
-  // Keep raw body for webhook validation
-  receiver.app.use(express.json(
-    { verify: rawBodySaver, strict: false },
-  ));
+  // Normal routing via Express
+  const receiver = new ExpressReceiver({ signingSecret: credentials.slack.signingSecret });
+
+  // Listener for Slack-specific events
+  const app = new App({ receiver, token: credentials.slack.token });
+
+  // Raw body is used validate Stripe's webhook signature
+  receiver.app.use(express.json({ verify: rawBodySaver, strict: false }));
 
   return { app, receiver };
 };
