@@ -1,7 +1,7 @@
 ## Pretty Buggy Slack Bot
 
 Integrates **Slack** 
-with **Stripe** 
+with **Stripe Webhooks** 
 
 #### Notifies Slack when these events occur on Stripe:
 1. A Customer is created
