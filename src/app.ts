@@ -28,12 +28,10 @@ const initReceiverAndApp = async () => {
 };
 
 const setupDependencies = async (client: WebClient) => {
-  const { slack, stripe } = CREDENTIALS;
-
-  const stripeApi = new Stripe(stripe.secretKey, { apiVersion: stripe.apiVersion });
+  const stripe = new Stripe(CREDENTIALS.stripe.secretKey, { apiVersion: CREDENTIALS.stripe.apiVersion });
   const slackWebService = new SlackWebApi({ client });
-  const stripeEventService = new StripeValidator({ stripe: stripeApi, signingSecret: stripe.signingSecret });
-  const eventNotifier = new EventNotifier({ slackWebService, channel: slack.channel });
+  const stripeEventService = new StripeValidator({ stripe: stripe, signingSecret: CREDENTIALS.stripe.signingSecret });
+  const eventNotifier = new EventNotifier({ slackWebService, channel: CREDENTIALS.slack.channel });
 
   return { stripeEventService, eventNotifier };
 };
