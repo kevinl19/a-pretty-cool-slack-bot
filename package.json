@@ -1,16 +1,16 @@
 {
-  "name": "kevs-slack-bot",
+  "name": "expressful-striped-slacker-bot",
   "version": "1.0.0",
   "description": "Slack bot with Stripe webhook integration",
   "main": "src/app.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kevinl19/kevs-slack-bot.git"
+    "url": "git+https://github.com/kevinl19/expressful-striped-slacker-bot.git"
   },
   "author": "Kevin Liu <kevinliu1996@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kevinl19/kevs-slack-bot/issues"
+    "url": "https://github.com/kevinl19/expressful-striped-slacker-bot/issues"
   },
   "scripts": {
     "start": "yarn run dev",
