@@ -10,6 +10,5 @@ Notifies Slack channel when on Stripe:
 
 To run:
 1. Setup .env from .env.sample
-2. `yarn` to install packages
-3a. `yarn dev` or `yarn debug` to start development
-3b. `yarn run` to run on production
+2. `yarn` to install packages 
+3. `yarn dev` or `yarn debug` for development or `yarn run` to run on production
