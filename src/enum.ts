@@ -1,3 +1,4 @@
+/* These are all the possible webhook events from Stripe */
 export enum StripeEventType {
   AccountUpdated = 'account.updated',
   AccountApplicationAuthorized = 'account.application.authorized',
