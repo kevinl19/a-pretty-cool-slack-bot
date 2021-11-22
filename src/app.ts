@@ -9,6 +9,7 @@ import { WebClient } from '@slack/web-api';
 import StripeValidator from './classes/stripeValidator';
 import { handleEvent, verifyRequest } from './routes';
 import { SlackWebApi } from './classes';
+import { RouteDependencies } from './type';
 
 dotenv.config();
 
@@ -50,7 +51,6 @@ const setupDependencies = async (client: WebClient) => {
   return { stripeEventService, eventNotifier };
 };
 
-type RouteDependencies = { stripeEventService: StripeValidator, eventNotifier: EventNotifier };
 const addRoutes = async (receiver: ExpressReceiver, dependencies: RouteDependencies) => {
   const { stripeEventService, eventNotifier } = dependencies;
   receiver.app.post('/webhook', verifyRequest({ stripeValidator: stripeEventService }), handleEvent({ eventNotifier }));

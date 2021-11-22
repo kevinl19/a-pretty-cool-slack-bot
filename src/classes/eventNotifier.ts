@@ -1,23 +1,17 @@
 import SlackWebApi from './slackWebApi';
 import { StripeEventType } from '../enum';
-import { StripeEvent } from '../type';
+import { StripeEvent, SupportedEvents } from '../type';
 import { getRandomEmojis } from '../util';
 import { Stripe } from 'stripe';
-
-interface EventNotifierParams {
-  slackWebService: SlackWebApi;
-  channel: string;
-}
-
-export type SupportedEvents = (
-  StripeEventType.InvoicePaymentSucceeded
-  | StripeEventType.CustomerSubscriptionUpdated
-  | StripeEventType.CustomerCreated
-  );
 
 interface NewSubscriptionParams {
   subscription: Stripe.Subscription,
   previous_attributes: { status?: Stripe.Subscription.Status }
+}
+
+interface EventNotifierParams {
+  slackWebService: SlackWebApi;
+  channel: string;
 }
 
 class EventNotifier {
