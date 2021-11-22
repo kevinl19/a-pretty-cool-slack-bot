@@ -1,8 +1,20 @@
-import { RANDOM_EMOJIS } from './constant';
+import { EMOJI_KEYWORDS } from './constant';
 
-// @todo: Need more algos
-export const getRandomEmojis = (n: number = 3) => {
-  const shuffled = RANDOM_EMOJIS.sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, n).join('');
+const emojiSet = require('emoji-set');
+
+
+const nRandomElements = (n: number) => (el: any[]) =>
+  el.sort(() => 0.5 - Math.random());
+
+// @todo: Needz more algoz
+const getHappyEmojis = (n: number) => nRandomElements(n)(
+  EMOJI_KEYWORDS.reduce((acc, keyword) => {
+    const emojis = emojiSet.searchByKeyword(keyword, false, true);
+    return acc.concat(...emojis);
+  }, []),
+);
+
+export {
+  getHappyEmojis,
 };
 

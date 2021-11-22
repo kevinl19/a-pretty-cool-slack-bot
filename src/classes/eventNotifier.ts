@@ -1,8 +1,11 @@
 import SlackAPI from './slackAPI';
 import { StripeEventType } from '../enum';
-import { getRandomEmojis } from '../util';
 import { Stripe } from 'stripe';
 import { StripeEvent } from '../type';
+import { getHappyEmojis } from '../util';
+import { EMOJI_KEYWORDS } from '../constant';
+
+const emojiSet = require('emoji-set');
 
 interface NewSubscriptionParams {
   subscription: Stripe.Subscription,
@@ -42,8 +45,9 @@ class EventNotifier {
   }
 
   async handleCustomerCreated(customer: Stripe.Customer) {
+    const emoji = emojiSet.searchByKeyword(EMOJI_KEYWORDS);
     return this.slack.sendMessage({
-      text: `A new user has just registered! ${getRandomEmojis(1)}`,
+      text: `A user has just registered! ${getHappyEmojis(1)}`,
       channel: this.channelId,
     });
   }
@@ -63,7 +67,9 @@ class EventNotifier {
     }
 
     return await this.slack.sendMessage({
-      text: `A user has just subscribed to ${validItem.plan.nickname}! ${getRandomEmojis(5)}`,
+      text: validItem.plan.nickname
+        ? `A user has just subscribed to ${validItem.plan.nickname}! ${getHappyEmojis(3)}`
+        : `A user has just subscribed! ${getHappyEmojis(3)}`,
       channel: this.channelId,
     });
 
@@ -73,13 +79,11 @@ class EventNotifier {
     if (payment.amount <= 0) {
       return undefined;
     }
-
     return await this.slack.sendMessage({
-      text: `We securing the bag and getting that 🍞. 🤑🤑🤑\nPayment for $${(payment.amount / 100).toFixed(2)} received ${getRandomEmojis(3)}`,
+      text: `Payment for $${(payment.amount / 100).toFixed(2)} received! ${getHappyEmojis(2)}`,
       channel: this.channelId,
     });
   }
-
 }
 
 export default EventNotifier;
