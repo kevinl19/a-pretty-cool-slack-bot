@@ -3,9 +3,9 @@ import { EMOJI_KEYWORDS } from './constant';
 const emojiSet = require('emoji-set');
 
 
-const nRandomElements = (elements: any[], n: number) => elements
-.sort(() => 0.5 - Math.random())
-.slice(0, n);
+const nRandomElements = (elems: any[], n: number) =>
+  elems.sort(() => 0.5 - Math.random())
+  .slice(0, n);
 
 // @todo: Needs more Algoz
 const getHappyEmojis = (n: number) => {
