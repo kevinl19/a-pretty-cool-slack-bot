@@ -3,7 +3,7 @@
 Integrates **Slack** 
 with **Stripe** 
 
-#### Technologies and Libraries:
+#### Technologies:
 1. TypeScript
 2. Node/Express
 3. [Bolt](https://slack.dev/bolt-js/tutorial/getting-started)
