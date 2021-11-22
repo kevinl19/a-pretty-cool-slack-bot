@@ -7,7 +7,7 @@ const nRandomElements = (elements: any[], n: number) => elements
 .sort(() => 0.5 - Math.random())
 .slice(0, n);
 
-// @todo: Needz more algoz
+// @todo: Needs more Algoz
 const getHappyEmojis = (n: number) => {
   // Ex. ['😀', '😃', ...]
   const emojis = EMOJI_KEYWORDS.reduce((acc, keyword) => {
