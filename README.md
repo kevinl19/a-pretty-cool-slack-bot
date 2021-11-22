@@ -14,7 +14,7 @@ with **Stripe**
 2. A subscription is activated or reactivated
 3. A payment is received
 
-####To run:
+#### Instructions:
 1. Setup .env from .env.sample
 2. `yarn` to install packages 
 3. `yarn dev` or `yarn debug` for development
