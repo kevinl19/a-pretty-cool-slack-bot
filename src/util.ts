@@ -9,11 +9,12 @@ const nRandomElements = (elements: any[], n: number) => elements
 
 // @todo: Needz more algoz
 const getHappyEmojis = (n: number) => {
+  // Ex. ['😀', '😃', ...]
   const emojis = EMOJI_KEYWORDS.reduce((acc, keyword) => {
-    // ['😀', '😃', ...]
     const emojis = emojiSet.searchByKeyword(keyword, false, true);
     return acc.concat(...emojis);
   }, []);
+
   return nRandomElements(emojis, n);
 };
 
