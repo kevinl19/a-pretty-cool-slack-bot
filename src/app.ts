@@ -10,16 +10,16 @@ import StripeValidator from './classes/stripeValidator';
 import { handleEvent, verifyRequest } from './routes';
 import { SlackWebApi } from './classes';
 import { RouteDependencies } from './type';
-import { Credentials, Port } from './constant';
+import { CREDENTIALS, PORT } from './constant';
 
 dotenv.config();
 
 const initReceiverAndApp = async () => {
   // Normal routing via Express
-  const receiver = new ExpressReceiver({ signingSecret: Credentials.slack.signingSecret });
+  const receiver = new ExpressReceiver({ signingSecret: CREDENTIALS.slack.signingSecret });
 
   // Listener for Slack-specific events
-  const app = new App({ receiver, token: Credentials.slack.token });
+  const app = new App({ receiver, token: CREDENTIALS.slack.token });
 
   // Raw body is used validate Stripe's webhook signature
   receiver.app.use(express.json({ verify: rawBodySaver, strict: false }));
@@ -28,7 +28,7 @@ const initReceiverAndApp = async () => {
 };
 
 const setupDependencies = async (client: WebClient) => {
-  const { slack, stripe } = Credentials;
+  const { slack, stripe } = CREDENTIALS;
 
   const stripeApi = new Stripe(stripe.secretKey, { apiVersion: stripe.apiVersion });
   const slackWebService = new SlackWebApi({ client });
@@ -48,8 +48,8 @@ const start = () => async () => {
   const dependencies = await setupDependencies(app.client);
   await addRoutes(receiver, dependencies);
 
-  app.start(Port).then(() =>
-    console.log(`App listening on port ${Port}`),
+  app.start(PORT).then(() =>
+    console.log(`App listening on port ${PORT}`),
   );
 };
 
