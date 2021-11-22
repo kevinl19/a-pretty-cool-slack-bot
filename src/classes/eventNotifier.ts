@@ -1,8 +1,8 @@
 import SlackWebApi from './slackWebApi';
 import { StripeEventType } from '../enum';
-import { StripeEvent, SupportedEvents } from '../type';
 import { getRandomEmojis } from '../util';
 import { Stripe } from 'stripe';
+import { StripeEvent } from '../type';
 
 interface NewSubscriptionParams {
   subscription: Stripe.Subscription,
@@ -37,8 +37,8 @@ class EventNotifier {
         [StripeEventType.CustomerCreated]: async () => this.handleCustomerCreated(<Stripe.Customer> data.object),
         [StripeEventType.InvoicePaymentSucceeded]: async () => this.handlePaymentSuccess(<Stripe.PaymentIntent> data.object),
         [StripeEventType.CustomerSubscriptionUpdated]: async () => this.handleNewSubscription(<NewSubscriptionParams> <unknown> data),
-      }
-    )[<SupportedEvents> type]();
+      } as Record<StripeEventType, () => any>
+    )[type]();
   }
 
   async handleCustomerCreated(customer: Stripe.Customer) {
