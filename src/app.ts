@@ -29,6 +29,7 @@ const initReceiverAndApp = async () => {
 
 const setupDependencies = async (client: WebClient) => {
   const { slack, stripe } = Credentials;
+
   const stripeApi = new Stripe(stripe.secretKey, { apiVersion: stripe.apiVersion });
   const slackWebService = new SlackWebApi({ client });
   const stripeEventService = new StripeValidator({ stripe: stripeApi, signingSecret: stripe.signingSecret });
