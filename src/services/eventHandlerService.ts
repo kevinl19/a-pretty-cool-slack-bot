@@ -1,32 +1,33 @@
-import SlackAPI from './slackAPI';
+import SlackWebService from './slackWebService';
 import { StripeEventType } from '../enum';
 import { Stripe } from 'stripe';
 import { StripeEvent } from '../type';
 import { getHappyEmojis } from '../util';
-import { EMOJI_KEYWORDS } from '../constant';
-
-const emojiSet = require('emoji-set');
+import StripeService from './stripeService';
 
 interface NewSubscriptionParams {
   subscription: Stripe.Subscription,
   previous_attributes: { status?: Stripe.Subscription.Status }
 }
 
-interface EventNotifierParams {
-  slack: SlackAPI;
+interface EventHandlerServiceParams {
   channelId: string;
+  slackWebService: SlackWebService;
+  stripeService: StripeService;
 }
 
-class EventNotifier {
-  slack: SlackAPI;
+class EventHandlerService {
   channelId: string;
+  slackWebService: SlackWebService;
+  stripeService: StripeService;
 
-  constructor({ slack, channelId }: EventNotifierParams) {
-    this.slack = slack;
+  constructor({ channelId, slackWebService, stripeService }: EventHandlerServiceParams) {
     this.channelId = channelId;
+    this.slackWebService = slackWebService;
+    this.stripeService = stripeService;
   }
 
-  async handle(event: StripeEvent) {
+  async handleEvent(event: StripeEvent) {
     try {
       return await this.sendMessageIfValid(event);
     } catch (e) {
@@ -45,8 +46,7 @@ class EventNotifier {
   }
 
   async handleCustomerCreated(customer: Stripe.Customer) {
-    const emoji = emojiSet.searchByKeyword(EMOJI_KEYWORDS);
-    return this.slack.sendMessage({
+    return this.slackWebService.sendMessage({
       text: `A user has just registered! ${getHappyEmojis(1)}`,
       channel: this.channelId,
     });
@@ -66,7 +66,7 @@ class EventNotifier {
       return undefined;
     }
 
-    return await this.slack.sendMessage({
+    return await this.slackWebService.sendMessage({
       text: validItem.plan.nickname
         ? `A user has just subscribed to ${validItem.plan.nickname}! ${getHappyEmojis(3)}`
         : `A user has just subscribed! ${getHappyEmojis(3)}`,
@@ -79,11 +79,11 @@ class EventNotifier {
     if (payment.amount <= 0) {
       return undefined;
     }
-    return await this.slack.sendMessage({
+    return await this.slackWebService.sendMessage({
       text: `Payment for $${(payment.amount / 100).toFixed(2)} received! ${getHappyEmojis(2)}`,
       channel: this.channelId,
     });
   }
 }
 
-export default EventNotifier;
+export default EventHandlerService;

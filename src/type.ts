@@ -1,12 +1,11 @@
 import { Request } from 'express';
 import { Stripe } from 'stripe';
-import EventValidator from './classes/eventValidator';
-import EventNotifier from './classes/eventNotifier';
 import { StripeEventType } from './enum';
+import { EventHandlerService, StripeService } from './services';
 
 interface RouteDependencies {
-  eventValidator: EventValidator,
-  eventNotifier: EventNotifier
+  stripeService: StripeService,
+  eventHandlerService: EventHandlerService
 }
 
 interface ModifiedRequest extends Request {

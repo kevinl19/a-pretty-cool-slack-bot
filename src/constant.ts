@@ -1,24 +1,39 @@
-import { Stripe } from 'stripe';
+require('dotenv').config();
 
-const CREDENTIALS = {
+interface Credentials {
   stripe: {
-    secretKey: process.env.STRIPE_SECRET_KEY as string,
-    signingSecret: process.env.STRIPE_SIGNING_SECRET as string,
-    apiVersion: process.env.STRIPE_API_VERSION as Stripe.LatestApiVersion,
+    secretKey: string,
+    apiVersion: string
+    signingSecret: string,
   },
   slack: {
-    token: process.env.SLACK_TOKEN as string,
-    signingSecret: process.env.SLACK_SIGNING_SECRET as string,
-    channel: process.env.SLACK_CHANNEL_ID as string,
+    token: string,
+    channel: string
+    signingSecret: string,
+  }
+}
+
+const Credentials: Credentials = {
+  stripe: {
+    secretKey: process.env.STRIPE_SECRET_KEY!,
+    signingSecret: process.env.STRIPE_SIGNING_SECRET!,
+    apiVersion: process.env.STRIPE_API_VERSION!,
+  },
+  slack: {
+    token: process.env.SLACK_BOT_TOKEN!,
+    channel: process.env.SLACK_CHANNEL_ID!,
+    signingSecret: process.env.SLACK_SIGNING_SECRET!,
   },
 };
 
-const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+const Port = process.env.PORT
+  ? parseInt(process.env.PORT, 10)
+  : 8080;
 
-const EMOJI_KEYWORDS = ['joy', 'playful', 'perf', 'cash', 'green', 'money', 'space', 'planet', 'happy', 'grinning', 'wink', 'happy', 'hands', 'hello', 'clap', 'hi', 'yes', 'raised', 'palm'];
+const KeywordsEmojiSet = ['joy', 'playful', 'perf', 'cash', 'green', 'money', 'space', 'planet', 'happy', 'grinning', 'wink', 'happy', 'hands', 'hello', 'clap', 'hi', 'yes', 'raised', 'palm'];
 
 export {
-  PORT,
-  CREDENTIALS,
-  EMOJI_KEYWORDS,
+  Port,
+  Credentials,
+  KeywordsEmojiSet,
 };

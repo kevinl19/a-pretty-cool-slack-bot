@@ -1,9 +1,9 @@
 import { NextFunction, Response } from 'express';
-import { EventValidator } from '../classes';
 import { ModifiedRequest } from '../type';
 import { StripeError } from '../enum';
+import StripeService from '../services/stripeService';
 
-const verifyRequest = ({ eventValidator }: { eventValidator: EventValidator }) => [
+const verifyRequest = ({ stripeService }: { stripeService: StripeService }) => [
   async ({
     rawBody: payload,
     headers: { 'stripe-signature': signature },
@@ -11,7 +11,7 @@ const verifyRequest = ({ eventValidator }: { eventValidator: EventValidator }) =
     if (!signature || !payload) {
       res.status(!payload ? 400 : 401).send(!payload ? 'No payload' : 'No signature');
     }
-    const response = eventValidator.validate(payload!, signature!);
+    const response = stripeService.validate(payload!, signature!);
     if (response && Object.values(StripeError).includes(response.type)) {
       res.status(400).send(response.message);
       return;

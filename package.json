@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Slack bot with Stripe webhook integration",
   "main": "src/app.ts",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kevinl19/expressfully-striped-slacker-bot.git"
@@ -30,13 +31,16 @@
     "@typescript-eslint/parser": "^5.0.0",
     "dotenv": "^10.0.0",
     "eslint": "7.14.0",
+    "src": "^1.1.2",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.2"
+    "typescript": "^4.6.0-dev.20211122"
   },
   "dependencies": {
     "@slack/bolt": "^3.8.1",
     "emoji-set": "^1.0.3",
     "express": "^4.17.1",
-    "stripe": "^8.191.0"
+    "stripe": "^8.191.0",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths": "^3.12.0"
   }
 }

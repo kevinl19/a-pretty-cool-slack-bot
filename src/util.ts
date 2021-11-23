@@ -1,4 +1,4 @@
-import { EMOJI_KEYWORDS } from './constant';
+import { KeywordsEmojiSet } from './constant';
 
 const emojiSet = require('emoji-set');
 
@@ -10,7 +10,7 @@ const nRandomElements = (elems: any[], n: number) =>
 // @todo: Needs more Algoz
 const getHappyEmojis = (n: number) => {
   // Ex. ['😀', '😃', ...]
-  const emojis = EMOJI_KEYWORDS.reduce((acc, keyword) => {
+  const emojis = KeywordsEmojiSet.reduce((acc, keyword) => {
     const emojis = emojiSet.searchByKeyword(keyword, false, true);
     return acc.concat(...emojis);
   }, []);

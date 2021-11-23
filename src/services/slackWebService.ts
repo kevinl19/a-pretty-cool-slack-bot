@@ -1,6 +1,6 @@
 import { ChatPostMessageArguments, WebClient } from '@slack/web-api';
 
-class SlackAPI {
+class SlackWebService {
   client: WebClient;
 
   constructor({ client }: { client: WebClient }) {
@@ -8,8 +8,8 @@ class SlackAPI {
   }
 
   sendMessage(args: ChatPostMessageArguments) {
-    return this.client.chat.postMessage(args);
+    return this.client.chat.postMessage({ ...args, icon_emoji: ':chart_with_upwards_trend:' });
   }
 }
 
-export default SlackAPI;
+export default SlackWebService;

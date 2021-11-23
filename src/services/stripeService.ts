@@ -1,6 +1,6 @@
 import { Stripe } from 'stripe';
 
-class EventValidator {
+class StripeService {
   stripe: Stripe;
   signingSecret: string;
 
@@ -18,4 +18,4 @@ class EventValidator {
   }
 }
 
-export default EventValidator;
+export default StripeService;
