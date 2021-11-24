@@ -9,7 +9,27 @@ class StripeService {
     this.signingSecret = signingSecret;
   }
 
-  validate(payload: string, signature: string | string[]) {
+  async getCustomers(params?: Stripe.CustomerListParams): Promise<Stripe.Customer[]> {
+    let customers: Stripe.Customer[] = [];
+
+    while (true) {
+      const { has_more, data } = await this.stripe.customers.list({
+        ...{
+          limit: 100,
+          starting_after: customers[customers.length - 1]?.id,
+        }, ...params,
+      });
+      if (data && data.length !== 0) {
+        customers.push(...data);
+      } else if (!has_more) {
+        break;
+      }
+    }
+
+    return customers;
+  }
+
+  validateEvent(payload: string, signature: string | string[]) {
     try {
       return this.stripe.webhooks.constructEvent(payload, signature, this.signingSecret);
     } catch (e: any) {

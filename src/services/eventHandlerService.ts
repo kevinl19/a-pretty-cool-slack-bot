@@ -4,6 +4,7 @@ import { Stripe } from 'stripe';
 import { StripeEvent } from '../type';
 import { getHappyEmojis } from '../util';
 import StripeService from './stripeService';
+import moment from 'moment';
 
 interface NewSubscriptionParams {
   subscription: Stripe.Subscription,
@@ -46,6 +47,9 @@ class EventHandlerService {
   }
 
   async handleCustomerCreated(customer: Stripe.Customer) {
+    const oneWeek = moment().subtract(7, 'days');
+    const twoWeeks = moment().subtract(14, 'days');
+    const customersTwoWeek = await this.stripeService.getCustomers({ created: { gte: twoWeeks.unix() } });
     return this.slackWebService.sendMessage({
       text: `A user has just registered! ${getHappyEmojis(1)}`,
       channel: this.channelId,

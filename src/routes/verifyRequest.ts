@@ -11,7 +11,7 @@ const verifyRequest = ({ stripeService }: { stripeService: StripeService }) => [
     if (!signature || !payload) {
       res.status(!payload ? 400 : 401).send(!payload ? 'No payload' : 'No signature');
     }
-    const response = stripeService.validate(payload!, signature!);
+    const response = stripeService.validateEvent(payload!, signature!);
     if (response && Object.values(StripeError).includes(response.type)) {
       res.status(400).send(response.message);
       return;
