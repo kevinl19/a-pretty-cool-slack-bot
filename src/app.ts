@@ -4,11 +4,10 @@ import { Stripe } from 'stripe';
 import express from 'express';
 import { rawBodySaver } from './middleware';
 import { WebClient } from '@slack/web-api';
-
-import { RouteDependencies } from './type';
 import { Credentials, Port } from './constant';
-import { handleEvent, verifyRequest } from './routes';
 import { EventHandlerService, SlackWebService, StripeService } from './services';
+import { RouteDependencies } from './type';
+import { handleEvent, verifyRequest } from './routes';
 
 const RequiredEnvVariables = [
   'STRIPE_SECRET_KEY',
@@ -19,7 +18,7 @@ const RequiredEnvVariables = [
   'SLACK_SIGNING_SECRET',
 ];
 
-const validEnvVariables = () => !!process.env && (
+const isInitialConfigValid = () => !!process.env && (
   RequiredEnvVariables.reduce((isValid, key) => {
     const isSet = key in process.env && !!process.env[key]!.trim();
     !isSet && console.error(`Required env variable ${key} missing`);
@@ -42,7 +41,10 @@ const initializeApplication = async () => {
 };
 
 const setupDependencies = async (client: WebClient) => {
-  const stripe = new Stripe(Credentials.stripe.secretKey, <Stripe.StripeConfig> { apiVersion: Credentials.stripe.apiVersion });
+  const stripe = new Stripe(Credentials.stripe.secretKey, <Stripe.StripeConfig> {
+    apiVersion: Credentials.stripe.apiVersion,
+    typescript: true,
+  });
 
   const slackWebService = new SlackWebService({ client });
   const stripeService = new StripeService({ stripe, signingSecret: Credentials.stripe.signingSecret });
@@ -70,7 +72,7 @@ const start = async () => {
   );
 };
 
-if (validEnvVariables()) {
+if (isInitialConfigValid()) {
   start();
 } else {
   console.log('Process exiting');

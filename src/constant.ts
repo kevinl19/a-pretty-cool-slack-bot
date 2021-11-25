@@ -30,10 +30,13 @@ const Port = process.env.PORT
   ? parseInt(process.env.PORT, 10)
   : 8080;
 
+const DebugMode = process.env.DEBUG == 'true';
+
 const KeywordsEmojiSet = ['joy', 'playful', 'perf', 'cash', 'green', 'money', 'space', 'planet', 'happy', 'grinning', 'wink', 'happy', 'hands', 'hello', 'clap', 'hi', 'yes', 'raised', 'palm'];
 
 export {
   Port,
   Credentials,
   KeywordsEmojiSet,
+  DebugMode,
 };
