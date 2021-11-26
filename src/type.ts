@@ -1,10 +1,11 @@
 import { Request } from 'express';
 import { Stripe } from 'stripe';
 import { StripeEventType } from './enum';
-import { EventHandlerService, StripeService } from './services';
+import { EventHandlerService, SlackWebService, StripeService } from './services';
 
-interface RouteDependencies {
+interface Dependencies {
   stripeService: StripeService,
+  slackWebService: SlackWebService,
   eventHandlerService: EventHandlerService
 }
 
@@ -33,7 +34,7 @@ interface StripeEvent extends Stripe.Event {
 }
 
 export {
-  RouteDependencies,
+  Dependencies,
   ModifiedRequest,
   StripeEvent,
   StripeObject,

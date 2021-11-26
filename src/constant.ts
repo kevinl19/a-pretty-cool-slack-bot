@@ -1,5 +1,15 @@
 require('dotenv').config();
 
+
+const RequiredEnvVariables = [
+  'STRIPE_SECRET_KEY',
+  'STRIPE_SIGNING_SECRET',
+  'STRIPE_API_VERSION',
+  'SLACK_BOT_TOKEN',
+  'SLACK_CHANNEL_ID',
+  'SLACK_SIGNING_SECRET',
+];
+
 interface Credentials {
   stripe: {
     secretKey: string,
@@ -39,4 +49,5 @@ export {
   Credentials,
   KeywordsEmojiSet,
   DebugMode,
+  RequiredEnvVariables,
 };
