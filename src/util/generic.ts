@@ -1,4 +1,4 @@
-import { KeywordsEmojiSet } from './constant';
+import { KeywordsEmojiSet } from '../constant';
 
 const emojiSet = require('emoji-set');
 
@@ -18,7 +18,4 @@ const getHappyEmojis = (n: number) => {
   return nRandomElements(emojis, n);
 };
 
-export {
-  getHappyEmojis,
-};
-
+export { getHappyEmojis };
