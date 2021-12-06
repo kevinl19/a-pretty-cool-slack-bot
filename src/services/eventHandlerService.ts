@@ -36,15 +36,15 @@ class EventHandlerService {
     return (
       {
         [StripeEventType.CustomerCreated]: async () => this.handleCustomerCreated(<Stripe.Customer> data.object),
-        [StripeEventType.InvoicePaymentSucceeded]: async () => this.handlePaymentSuccess(<Stripe.PaymentIntent> data.object),
         [StripeEventType.CustomerSubscriptionUpdated]: async () => this.handleNewSubscription(<NewSubscriptionParams> <unknown> data),
+        // [StripeEventType.InvoicePaymentSucceeded]: async () => this.handlePaymentSuccess(<Stripe.PaymentIntent> data.object),
       } as Record<StripeEventType, () => any>
     )[type]();
   }
 
   async handleCustomerCreated(customer: Stripe.Customer) {
     await this.slackWebService.sendMessage({
-      text: `New registration`,
+      text: `New user registration detected.`,
     });
 
     const signupStatistics = await this.stripeService.getSignupStatistics();
@@ -75,12 +75,13 @@ class EventHandlerService {
 
     return await this.slackWebService.sendMessage({
       text: validItem.plan.nickname
-        ? `A user has just subscribed to ${validItem.plan.nickname}! ${getHappyEmojis(3)}`
-        : `A user has just subscribed! ${getHappyEmojis(3)}`,
+        ? `A user has just subscribed to ${validItem.plan.nickname}.`
+        : `A user has just signed up for a subscription.`,
     });
 
   }
 
+  /* Note: A little redundant at the moment.
   async handlePaymentSuccess(payment: Stripe.PaymentIntent) {
     if (payment.amount <= 0) {
       return undefined;
@@ -88,7 +89,7 @@ class EventHandlerService {
     return await this.slackWebService.sendMessage({
       text: `Payment for $${(payment.amount / 100).toFixed(2)} received! ${getHappyEmojis(2)}`,
     });
-  }
+  } */
 }
 
 export default EventHandlerService;
