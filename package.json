@@ -1,10 +1,25 @@
 {
+<<<<<<< HEAD
   "name": "pretty-good-slack-bot",
   "version": "1.0.0",
   "description": "Slack bot with Stripe webhook integration",
   "main": "src/app.ts",
   "author": "Kevin Liu <kevinliu1996@gmail.com>",
   "license": "ISC",
+=======
+  "name": "Pretty cool Slack bot",
+  "version": "1.0.0",
+  "description": "Slack bot with Stripe webhook integration",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinl19/a-pretty-cool-slack-bot.git"
+  },
+  "author": "Kevin Liu <kevinliu1996@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevinl19/a-pretty-cool-slack-bot/issues"
+  },
+>>>>>>> e4f6b20045e30060302a1e5cc1e417f1b00dada3
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only .",
     "debug": "ts-node-dev --inspect --respawn --transpile-only .",
@@ -15,6 +30,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "run:cron": "ts-node cron/index.ts"
   },
+<<<<<<< HEAD
+=======
+  "homepage": "https://github.com/kevinl19/a-pretty-cool-slack-bot#readme",
+>>>>>>> e4f6b20045e30060302a1e5cc1e417f1b00dada3
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/plugin-transform-runtime": "^7.16.4",
