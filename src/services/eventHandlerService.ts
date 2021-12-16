@@ -1,26 +1,27 @@
-import SlackWebApi from './slackWebApi';
+import SlackWebService from './slackWebService';
 import { StripeEventType } from '../enum';
-import { getRandomEmojis } from '../util';
 import { Stripe } from 'stripe';
 import { StripeEvent } from '../type';
+import { getHappyEmojis } from '../util';
+import StripeService from './stripeService';
 
 interface NewSubscriptionParams {
   subscription: Stripe.Subscription,
   previous_attributes: { status?: Stripe.Subscription.Status }
 }
 
-interface EventNotifierParams {
-  slackWebService: SlackWebApi;
-  channel: string;
+interface EventHandlerServiceParams {
+  slackWebService: SlackWebService;
+  stripeService: StripeService;
 }
 
-class EventNotifier {
-  slackService: SlackWebApi;
-  channel: string;
+class EventHandlerService {
+  slackWebService: SlackWebService;
+  stripeService: StripeService;
 
-  constructor({ slackWebService, channel }: EventNotifierParams) {
-    this.slackService = slackWebService;
-    this.channel = channel;
+  constructor({ slackWebService, stripeService }: EventHandlerServiceParams) {
+    this.slackWebService = slackWebService;
+    this.stripeService = stripeService;
   }
 
   async handleEvent(event: StripeEvent) {
@@ -35,17 +36,27 @@ class EventNotifier {
     return (
       {
         [StripeEventType.CustomerCreated]: async () => this.handleCustomerCreated(<Stripe.Customer> data.object),
-        [StripeEventType.InvoicePaymentSucceeded]: async () => this.handlePaymentSuccess(<Stripe.PaymentIntent> data.object),
         [StripeEventType.CustomerSubscriptionUpdated]: async () => this.handleNewSubscription(<NewSubscriptionParams> <unknown> data),
+        // [StripeEventType.InvoicePaymentSucceeded]: async () => this.handlePaymentSuccess(<Stripe.PaymentIntent> data.object),
       } as Record<StripeEventType, () => any>
     )[type]();
   }
 
   async handleCustomerCreated(customer: Stripe.Customer) {
-    return this.slackService.sendMessage({
-      text: `A new user has just registered! ${getRandomEmojis(1)}`,
-      channel: this.channel,
+    await this.slackWebService.sendMessage({
+      text: `New user registration detected.`,
     });
+
+    const signupStatistics = await this.stripeService.getSignupStatistics();
+    if (signupStatistics) {
+      await this.slackWebService.sendMessage({
+        text: 'User Registration Statistics',
+        blocks: [{
+          type: 'section',
+          text: { text: signupStatistics, type: 'mrkdwn' },
+        }],
+      });
+    }
   }
 
   async handleNewSubscription({ subscription, previous_attributes }: NewSubscriptionParams) {
@@ -62,24 +73,23 @@ class EventNotifier {
       return undefined;
     }
 
-    return await this.slackService.sendMessage({
-      text: `A user has just subscribed to ${validItem.plan.nickname}! ${getRandomEmojis(5)}`,
-      channel: this.channel,
+    return await this.slackWebService.sendMessage({
+      text: validItem.plan.nickname
+        ? `A user has just subscribed to ${validItem.plan.nickname}.`
+        : `A user has just signed up for a subscription.`,
     });
 
   }
 
+  /* Note: A little redundant at the moment.
   async handlePaymentSuccess(payment: Stripe.PaymentIntent) {
     if (payment.amount <= 0) {
       return undefined;
     }
-
-    return await this.slackService.sendMessage({
-      text: `We securing the bag and getting that 🍞. 🤑🤑🤑\nPayment for $${(payment.amount / 100).toFixed(2)} received ${getRandomEmojis(3)}`,
-      channel: this.channel,
+    return await this.slackWebService.sendMessage({
+      text: `Payment for $${(payment.amount / 100).toFixed(2)} received! ${getHappyEmojis(2)}`,
     });
-  }
-
+  } */
 }
 
-export default EventNotifier;
+export default EventHandlerService;

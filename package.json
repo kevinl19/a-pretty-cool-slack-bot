@@ -1,17 +1,10 @@
 {
   "name": "pretty-good-slack-bot",
   "version": "1.0.0",
-  "description": "A pretty cool Slack bot",
+  "description": "Slack bot with Stripe webhook integration",
   "main": "src/app.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kevinl19/pretty-good-slack-bot.git"
-  },
   "author": "Kevin Liu <kevinliu1996@gmail.com>",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kevinl19/pretty-good-slack-bot/issues"
-  },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only .",
     "debug": "ts-node-dev --inspect --respawn --transpile-only .",
@@ -19,23 +12,38 @@
     "clean": "rimraf lib/*",
     "build": "npm-run-all clean tsc",
     "lint": "eslint --ext .js,.ts 'src/'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run:cron": "ts-node cron/index.ts"
   },
-  "homepage": "https://github.com/kevinl19/pretty-good-slack-bot#readme",
   "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.4",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/runtime": "^7.16.3",
     "@tsconfig/node16": "^1.0.2",
-    "eslint": "7.14.0",
-    "ts-node-dev": "^1.1.8",
     "@types/express": "^4.17.13",
+    "@types/node": "16",
+    "@types/node-cron": "^3.0.0",
     "@types/stripe": "^8.0.417",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
-    "dotenv": "^10.0.0",
-    "typescript": "^4.5.2"
+    "eslint": "7.14.0",
+    "parcel": "^2.0.1",
+    "src": "^1.1.2",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.6.0-dev.20211122"
   },
   "dependencies": {
+    "npm-run-all": "^4.1.5",
+    "dotenv": "^10.0.0",
+    "rimraf": "^3.0.2",
     "@slack/bolt": "^3.8.1",
+    "emoji-set": "^1.0.3",
     "express": "^4.17.1",
-    "stripe": "^8.191.0"
+    "moment": "^2.29.1",
+    "node-cron": "^3.0.0",
+    "stripe": "^8.191.0",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths": "^3.12.0"
   }
 }
