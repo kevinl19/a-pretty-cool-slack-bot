@@ -1,75 +1,41 @@
+import { Dependencies } from '../src/type';
+import { setupDependencies } from '../src/util';
 import { WebClient } from '@slack/web-api';
 import { Credentials } from '../src/constant';
-import { schedule, ScheduledTask, ScheduleOptions } from 'node-cron';
+import { schedule, ScheduleOptions } from 'node-cron';
 import { notifyUserSignups } from './tasks';
-import { setupDependencies } from '../src/util';
-import { Dependencies } from '../src/type';
 
-interface Job {
-  expr: string,
-  func: () => void,
-  opts?: ScheduleOptions,
-}
-
-interface CronManagerProps {
-  dependencies: Dependencies,
+interface CronTask {
+  task: Function,
+  options: ScheduleOptions,
+  cronExpression: string,
 }
 
 class CronManager {
-  tasks: ScheduledTask[] = [];
-  dependencies?: Dependencies;
-
-  private static _instance: CronManager;
-
-  constructor(props?: CronManagerProps) {
-    CronManager._instance = this;
-    this.dependencies = props
-      ? props.dependencies
-      : undefined;
+  private readonly dependencies: Dependencies;
+  constructor(props: { dependencies: Dependencies }) {
+    this.dependencies = props.dependencies;
   }
 
-  static getInstance() {
-    if (!CronManager._instance) {
-      CronManager._instance = new CronManager();
+  assignTasks(tasks: CronTask[]) {
+    for (const task of tasks) {
+      schedule(task.cronExpression, () => {
+        task.task(this.dependencies);
+      } );
     }
-    return CronManager._instance;
-  }
-
-  async scheduleJobs(jobs: Job[]) {
-    for (const j of jobs) {
-      this.tasks.push(schedule(j.expr, j.func, j.opts));
-    }
-    return true;
   }
 }
 
-const setup = async () => {
-  const slack = new WebClient(Credentials.slack.token);
-  const dependencies = setupDependencies(slack);
-  const jobs: Job[] = [{
-    func: () => notifyUserSignups(dependencies),
-    opts: { timezone: 'America/Toronto' },
-    expr: '0 10 * * 0-5', // Every weekday at 10am ET
-  }];
+const slackClient = new WebClient(Credentials.slack.token);
+const dependencies = setupDependencies(slackClient);
 
-  return { dependencies, jobs };
-};
+const manager = new CronManager({dependencies});
+manager.assignTasks([
+  {
+    task: notifyUserSignups,
+    cronExpression: '0 10 * * 0-5',
+    options: { timezone: 'America/Toronto' }
+  }
+]);
 
-(async () => {
-  const slack = new WebClient(Credentials.slack.token);
-  const dependencies = setupDependencies(slack);
-  const jobs: Job[] = [{
-    func: () => notifyUserSignups(dependencies),
-    opts: { timezone: 'America/Toronto' },
-    expr: '0 10 * * 0-5', // Every weekday at 10am ET
-  }];
-
-
-})()
-
-(() => setup().then(
-  ({ dependencies }) =>
-    ()))();
-
-const manager = CronManager.getInstance().then();
-manager.scheduleJobs(object);
+console.log('Cron job started 👌');
